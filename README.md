@@ -4,23 +4,15 @@ An alternative to boot2docker that uses rsync instead of VirtualBox Shared Folde
 
 #Why?
 
-This project is a simple stopgap for the issue described here:
-https://github.com/boot2docker/boot2docker/issues/64
+This project is a simple stopgap for the issue [described here](https://github.com/boot2docker/boot2docker/issues/64). It looks like progress was made [here](https://github.com/boot2docker/boot2docker-cli/pull/247/files), but may have been abandoned because the boot2docker project has been deprecated in favor of Docker Machine. As far as I can tell, they are not addressing this issue in Docker Machine. At least not yet.
 
-It looks like progress was made here:
-https://github.com/boot2docker/boot2docker-cli/pull/247/files
+If you don't want to read all those links, the problem is that VirtualBox synced folders are slow. If you are using docker in a development workflow and you need to be able to edit your files on the host (your laptop) and have docker containers immediately pick up the changes via mapped volumes, then you will need to rely on those shared folders. If your project has many thousands of files, that is problematic because VB synced folders are so slow.
 
-But may have been abandoned because the boot2docker project has been deprecated in favor of Docker Machine. As far as I can tell, they are not addressing this issue in Docker Machine. At least not yet.
+My stop gap is to use rsync instead. This is not intended to be a long term fix. Just a simple interim solution.
 
-I hope that my stop gap solution is only temporary and something better is built. 
+According to [this blog post](http://mitchellh.com/comparing-filesystem-performance-in-virtual-machines), NFS is the answer. I tried it and did not get the performance I was hoping for from NFS. So I opted for rsync instead, allowing me to use VirtualBox native storage. If you prefer NFS, just edit the Vagrantfile and change "rsync" to "nfs".
 
-If you don't want to read all those links, the problem is that VirtualBox synced folders are slow. If you are using docker in a development workflow and you need to be able to edit your files on the hose
-(your laptop) and have docker immediately pick up the changes, then you will need to rely on those shared folders. If your project has many thousands of files, that is problematic because VB synced folder
-s are so slow.
-
-The best solution I have found is to use rsync to keep the files in sync. According to [this blog post](http://mitchellh.com/comparing-filesystem-performance-in-virtual-machines), NFS is the answer. I tried it and did not get the performance I was hoping for from NFS. So I opted for rsync instead so I can use VirtualBox native storage instead. If you want to use NFS, just edit the Vagrantfile and change "rsync" to "nfs".
-
-I have also installed fig on this vm since it is nice to have for dev workflows, which is the purpose of this vm.
+I have also installed fig on this vm since it is nice to have for dev workflows.
 
 #Directions
 
@@ -30,5 +22,6 @@ I have also installed fig on this vm since it is nice to have for dev workflows,
  - `vagrant up` to create the vm
  - `vagrant rsync-auto` to watch your synced folders for changes and automatically sync them into the VM (one way only)
  - Then ssh into the box with `vagrant ssh` and run your docker commands from in there. Your synced folders will be in `/data`
+ - I did not set up any port forwarding. Instead I have given the box a host-only private network with IP address 192.168.59.104. That way you can access any port you need via that IP. I usually map that in /etc/hosts to something like "docker" for convenience.
 
 Nothing fancy going on here, but gets the job done.
