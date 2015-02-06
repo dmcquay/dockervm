@@ -24,8 +24,6 @@ An alternative to boot2docker that uses rsync instead of VirtualBox Shared Folde
  - Then ssh into the box with `vagrant ssh` and run your docker commands from in there. Your synced folders will be in `/data`
  - I did not set up any port forwarding. Instead I have given the box a host-only private network with IP address 192.168.59.104. That way you can access any port you need via that IP. I usually map that in /etc/hosts to something like "docker" for convenience.
 
-# WARNING: I detect the number of CPUs in a way that doesn't work on Windows because I don't currently need to support Windows. If you need it, feel free to send me a PR.
-
 # More Details on why rsync is needed instead of VBox Shared Folders
 
 This project is a simple stopgap for the issue [described here](https://github.com/boot2docker/boot2docker/issues/64). It looks like progress was made [here](https://github.com/boot2docker/boot2docker-cli/pull/247/files), but may have been abandoned because the boot2docker project has been deprecated in favor of Docker Machine. As far as I can tell, they are not addressing this issue in Docker Machine. At least not yet.
