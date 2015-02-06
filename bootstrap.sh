@@ -15,8 +15,9 @@ docker cp docker-volumes:/docker-volumes /usr/local/bin/
 docker rm docker-volumes
 docker rmi docker-volumes golang:1.3-cross
 
-# prune orphaned docker voumes hourly
-echo 'for v in $(docker-volumes list -q); do docker-volumes rm $v; done;' > /etc/cron.hourly/prune-orphaned-docker-volumes
-
-# prune dangling docker images hourly
-echo 'docker rmi $(docker images -q --filter "dangling=true")' >> /etc/cron.hourly/prune-dangling-docker-images
+# prune orphaned docker images and voumes hourly
+HOURLY_CRON=/etc/cron.hourly/dockervm
+echo '#!/bin/bash' > $HOURLY_CRON
+echo 'for v in $(docker-volumes list -q); do docker-volumes rm $v; done;' >> $HOURLY_CRON
+echo 'docker rmi $(docker images -q --filter "dangling=true")' >> $HOURLY_CRON
+chmod +x $HOURLY_CRON
