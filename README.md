@@ -21,6 +21,7 @@ An alternative to boot2docker that uses rsync instead of VirtualBox Shared Folde
  - Create a file called *syncdirs* in the dockervm directory and add any paths that you want synced (one per line)
  - `vagrant up` to create the vm
  - `vagrant rsync-auto` to watch your synced folders for changes and automatically sync them into the VM (one way only)
+   - WARNING: Sometimes rsync-auto seems to stop working with no indication. I've noticed it when my computer just woke up. Sometimes you have to stop rsync-auto and start it again.
  - Then ssh into the box with `vagrant ssh` and run your docker commands from in there. Your synced folders will be in `/data`
  - I did not set up any port forwarding. Instead I have given the box a host-only private network with IP address 192.168.59.104. That way you can access any port you need via that IP. I usually map that in /etc/hosts to something like "docker" for convenience.
 
