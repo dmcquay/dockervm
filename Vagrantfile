@@ -21,6 +21,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provider "virtualbox" do |vb|
     vb.memory = 2048
-    vb.cpus = 8
+    vb.cpus = `sysctl hw.ncpu | awk '{print $2}'`
   end
 end
