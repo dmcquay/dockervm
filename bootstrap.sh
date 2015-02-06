@@ -13,6 +13,7 @@ docker build -t docker-volumes https://github.com/cpuguy83/docker-volumes.git
 docker run --name docker-volumes docker-volumes
 docker cp docker-volumes:/docker-volumes /usr/local/bin/
 docker rm docker-volumes
+docker rmi docker-volumes golang:1.3-cross
 
 # prune orphaned docker voumes hourly
 echo 'for v in $(docker-volumes list -q); do docker-volumes rm $v; done;' > /etc/cron.hourly/prune-orphaned-docker-volumes
