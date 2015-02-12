@@ -37,7 +37,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   f.each_line do |line|
     line = line.strip
     dir = line.split('/')[-1]
-    config.vm.synced_folder line, "/data/#{dir}", type: "rsync"
+    config.vm.synced_folder line, "/data/#{dir}", type: "nfs"
   end
   f.close
 
