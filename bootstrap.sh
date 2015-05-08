@@ -5,8 +5,12 @@ echo deb https://get.docker.com/ubuntu docker main > /etc/apt/sources.list.d/doc
 apt-get update
 apt-get install -y lxc-docker mysql-client-core-5.6 pv ntp
 
-# install fig
-curl -L https://github.com/docker/fig/releases/download/1.0.1/fig-`uname -s`-`uname -m` > /usr/local/bin/fig; chmod +x /usr/local/bin/fig
+# install docker-compose
+curl -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+
+# symlink fig for convenience
+ln -s /usr/local/bin/docker-compose /usr/local/bin/fig
 
 # install docker-volumes to help us prune orphaned volumes
 docker build -t docker-volumes https://github.com/cpuguy83/docker-volumes.git
